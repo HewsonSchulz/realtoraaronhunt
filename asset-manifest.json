@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.19d69d3e.css",
-    "main.js": "/static/js/main.6550dc61.js",
-    "index.html": "/index.html",
-    "main.19d69d3e.css.map": "/static/css/main.19d69d3e.css.map",
-    "main.6550dc61.js.map": "/static/js/main.6550dc61.js.map"
+    "main.css": "/realtoraaronhunt/static/css/main.19d69d3e.css",
+    "main.js": "/realtoraaronhunt/static/js/main.b584e987.js",
+    "index.html": "/realtoraaronhunt/index.html",
+    "main.19d69d3e.css.map": "/realtoraaronhunt/static/css/main.19d69d3e.css.map",
+    "main.b584e987.js.map": "/realtoraaronhunt/static/js/main.b584e987.js.map"
   },
   "entrypoints": [
     "static/css/main.19d69d3e.css",
-    "static/js/main.6550dc61.js"
+    "static/js/main.b584e987.js"
   ]
 }
