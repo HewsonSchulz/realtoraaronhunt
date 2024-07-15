@@ -8,26 +8,42 @@ export const ContactForm = ({ loggedInUser }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phoneNum, setPhoneNum] = useState('')
-  const [isInvalid, setIsInvalid] = useState({ name: false, email: false, phone_num: false })
+  const [isWithAgent, setIsWithAgent] = useState(null)
+  const [agentName, setAgentName] = useState('')
+  const [isInvalid, setIsInvalid] = useState({ name: false, email: false, phone_num: false, agent_name: false })
   const [message, setMessage] = useState({
     name: 'Please enter your name',
     email: 'Please enter your email',
     phoneNum: 'Please enter your phone number',
+    agentName: 'Please enter the name of your current agent',
   })
 
   const resetValidity = () => {
-    setIsInvalid({ name: false, email: false, phone_num: false })
+    setIsInvalid({ name: false, email: false, phone_num: false, agent_name: false })
     setMessage({
       name: 'Please enter your name',
       email: 'Please enter your email',
       phoneNum: 'Please enter your phone number',
+      agentName: 'Please enter the name of your current agent',
     })
+  }
+
+  const stringToBoolean = (str) => {
+    if (str === null) {
+      return false
+    }
+    return str.toLowerCase() === 'true'
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    submitContactInfo({ name, email, phone_num: phoneNum }).then((res) => {
+    const contactInfo = { name, email, phone_num: phoneNum }
+    if (stringToBoolean(isWithAgent)) {
+      contactInfo.agent_name = agentName
+    }
+
+    submitContactInfo(contactInfo).then((res) => {
       if (res.valid) {
         //!
       } else {
@@ -97,6 +113,59 @@ export const ContactForm = ({ loggedInUser }) => {
         />
         <FormFeedback>{message.phoneNum}</FormFeedback>
       </FormGroup>
+
+      <Label className='contact-form__input-label'>Are you already working with an agent?</Label>
+      <FormGroup check id='contact-form__agent-checkbox-yes'>
+        <Label check>
+          <Input
+            type='radio'
+            name='isWithAgent'
+            value='true'
+            checked={isWithAgent === 'true'}
+            onChange={(e) => {
+              setIsWithAgent(e.target.value)
+              updateStateObj(setIsInvalid, 'agent_name', false)
+            }}
+          />
+          Yes
+        </Label>
+      </FormGroup>
+      <FormGroup check id='contact-form__agent-checkbox-no'>
+        <Label check>
+          <Input
+            type='radio'
+            name='isWithAgent'
+            value='false'
+            checked={isWithAgent === 'false'}
+            onChange={(e) => {
+              setIsWithAgent(e.target.value)
+              updateStateObj(setIsInvalid, 'agent_name', false)
+            }}
+          />
+          No
+        </Label>
+      </FormGroup>
+
+      {stringToBoolean(isWithAgent) && (
+        <FormGroup id='contact-form__agent-name'>
+          <Label className='contact-form__input-label' for='agent-name'>
+            Agent name:
+          </Label>
+          <Input
+            id='agent-name'
+            className='contact-form__agent-name-input'
+            type='text'
+            value={agentName}
+            placeholder='Joe Smith'
+            invalid={isInvalid.agent_name}
+            onChange={(e) => {
+              updateStateObj(setIsInvalid, 'agent_name', false)
+              setAgentName(e.target.value)
+            }}
+          />
+          <FormFeedback>{message.agentName}</FormFeedback>
+        </FormGroup>
+      )}
 
       <Button color='primary' onClick={handleSubmit}>
         Submit

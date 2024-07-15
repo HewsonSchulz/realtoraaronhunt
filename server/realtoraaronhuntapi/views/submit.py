@@ -30,17 +30,22 @@ def submit(request):
             )
 
         try:
+            agent_name = req_body.get('agent_name', None)
+            if agent_name is not None:
+                agent_name = agent_name.strip()
+
             missing_props_msg = calc_missing_props(
                 req_body, ['name', 'email', 'phone_num']
             )
-            if missing_props_msg:
+            if missing_props_msg or agent_name == '':
+                is_invalid = calc_invalid_dict(req_body, ['name', 'email', 'phone_num'])
+                is_invalid['agent_name'] = agent_name == ''
+
                 return JsonResponse(
                     {
                         'valid': False,
                         'message': missing_props_msg,
-                        'is_invalid': calc_invalid_dict(
-                            req_body, ['name', 'email', 'phone_num']
-                        ),
+                        'is_invalid': is_invalid,
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
@@ -48,7 +53,6 @@ def submit(request):
             name = req_body['name'].strip()
             email = req_body['email'].strip()
             phone_num = req_body['phone_num'].strip()
-            agent_name = req_body.get('agent_name', None)
             date = f'''{get_date_info()['date']} {get_date_info()['mer_time']}'''
 
             # prepare email subject and message
@@ -60,7 +64,7 @@ Phone Number: {phone_num}'''
             if agent_name is not None:
                 message += f'''
 Currently working with an agent.
-Agent's name: {agent_name.strip()}
+Agent's name: {agent_name}
 Date: {date}'''
             else:
                 message += f'''
@@ -85,7 +89,7 @@ Date: {date}'''
             }
 
             if agent_name is not None:
-                response_data['agent_name'] = agent_name.strip()
+                response_data['agent_name'] = agent_name
 
             return JsonResponse(response_data, status=status.HTTP_201_CREATED)
         except Exception as ex:
