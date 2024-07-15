@@ -1,5 +1,5 @@
 // URL of the hosted API
-export const apiUrl = 'http://localhost:8088'
+export const apiUrl = process.env.REACT_APP_API_URL
 
 // generates options for fetch calls
 export const fetchOptions = (method, body) => {
@@ -15,4 +15,12 @@ export const fetchOptions = (method, body) => {
   }
 
   return options
+}
+
+// updates the value of a key within an object stored as React state
+export const updateStateObj = (setter, key, value) => {
+  setter((prevState) => ({
+    ...prevState,
+    [key]: value,
+  }))
 }

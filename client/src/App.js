@@ -1,3 +1,5 @@
+import { ContactForm } from './components/ContactForm'
+
 export const App = () => {
-  return <>!Bruh</>
+  return <ContactForm />
 }
