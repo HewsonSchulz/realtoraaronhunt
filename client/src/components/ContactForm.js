@@ -17,6 +17,7 @@ export const ContactForm = ({ loggedInUser }) => {
     phoneNum: 'Please enter your phone number',
     agentName: 'Please enter the name of your current agent',
   })
+  const [hasSubmit, setHasSubmit] = useState(false)
 
   const resetValidity = () => {
     setIsInvalid({ name: false, email: false, phone_num: false, agent_name: false })
@@ -37,6 +38,7 @@ export const ContactForm = ({ loggedInUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setHasSubmit(true)
 
     const contactInfo = { name, email, phone_num: phoneNum }
     if (stringToBoolean(isWithAgent)) {
@@ -45,10 +47,12 @@ export const ContactForm = ({ loggedInUser }) => {
 
     submitContactInfo(contactInfo).then((res) => {
       if (res.valid) {
-        //!
+        window.alert('Your contact information has been submitted. Thank you!')
+        window.location.reload()
       } else {
         resetValidity()
         setIsInvalid(res.is_invalid)
+        setHasSubmit(false)
       }
     })
   }
@@ -167,9 +171,15 @@ export const ContactForm = ({ loggedInUser }) => {
         </FormGroup>
       )}
 
-      <Button color='primary' onClick={handleSubmit}>
-        Submit
-      </Button>
+      {hasSubmit ? (
+        <Button color='primary' disabled>
+          Submit
+        </Button>
+      ) : (
+        <Button color='primary' onClick={handleSubmit}>
+          Submit
+        </Button>
+      )}
     </Form>
   )
 }
