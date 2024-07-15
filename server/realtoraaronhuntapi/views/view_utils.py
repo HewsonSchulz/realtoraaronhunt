@@ -12,6 +12,13 @@ def calc_missing_props(req_body, missing_props):
     return None
 
 
+def calc_invalid_dict(req_body, props):
+    result = {}
+    for prop in props:
+        result[prop] = prop not in req_body or str(req_body[prop]).strip() == ''
+    return result
+
+
 # generates an object with info about given date
 def get_date_info(datetime_str=None):
     if datetime_str:

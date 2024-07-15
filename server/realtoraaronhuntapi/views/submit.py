@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework import status
-from .view_utils import calc_missing_props, get_date_info
+from .view_utils import calc_missing_props, get_date_info, calc_invalid_dict
 
 
 @csrf_exempt
@@ -25,7 +25,7 @@ def submit(request):
             req_body = json.loads(request.body)
         except JSONDecodeError as ex:
             return JsonResponse(
-                {'message': 'Your request contains invalid json', 'error': ex},
+                {'message': 'Your request contains invalid json', 'error': ex.args[0]},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -35,7 +35,13 @@ def submit(request):
             )
             if missing_props_msg:
                 return JsonResponse(
-                    {'valid': False, 'message': missing_props_msg},
+                    {
+                        'valid': False,
+                        'message': missing_props_msg,
+                        'is_invalid': calc_invalid_dict(
+                            req_body, ['name', 'email', 'phone_num']
+                        ),
+                    },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 

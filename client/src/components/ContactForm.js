@@ -1,61 +1,45 @@
 import { useState } from 'react'
 import { Button, Form, FormFeedback, FormGroup, Input, Label } from 'reactstrap'
 import { updateStateObj } from '../helper'
+import { submitContactInfo } from '../managers/userManager'
 import './ContactForm.css'
 
 export const ContactForm = ({ loggedInUser }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phoneNum, setPhoneNum] = useState('')
-  const [isInvalid, setIsInvalid] = useState({ name: false, email: false })
-  const [message, setMessage] = useState({ name: '', email: '' })
+  const [isInvalid, setIsInvalid] = useState({ name: false, email: false, phone_num: false })
+  const [message, setMessage] = useState({
+    name: 'Please enter your name',
+    email: 'Please enter your email',
+    phoneNum: 'Please enter your phone number',
+  })
 
   const resetValidity = () => {
-    setIsInvalid({ name: false, email: false })
-    setMessage({ name: '', email: '' })
+    setIsInvalid({ name: false, email: false, phone_num: false })
+    setMessage({
+      name: 'Please enter your name',
+      email: 'Please enter your email',
+      phoneNum: 'Please enter your phone number',
+    })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    //! logInUser({ email, password }).then((userData) => {
-    //!   if (userData.valid) {
-    //!     const { valid, ...newUser } = userData
-    //!     localStorage.setItem('cqc_user', JSON.stringify(newUser))
-
-    //!     const { token, ...loggedInUser } = newUser
-    //!     setLoggedInUser(loggedInUser)
-    //!     navigate('/') //?
-    //!   } else {
-    //!     resetValidity()
-
-    //!     switch (userData.message) {
-    //!       case 'Missing properties: email, password':
-    //!         updateStateObj(setMessage, 'email', 'Please enter an email')
-    //!         updateStateObj(setIsInvalid, 'email', true)
-    //!         updateStateObj(setMessage, 'password', 'Please enter a password')
-    //!         updateStateObj(setIsInvalid, 'password', true)
-    //!         break
-    //!       case 'Missing property: email':
-    //!         updateStateObj(setMessage, 'email', 'Please enter an email')
-    //!         updateStateObj(setIsInvalid, 'email', true)
-    //!         break
-    //!       case 'Missing property: password':
-    //!         updateStateObj(setMessage, 'password', 'Please enter a password')
-    //!         updateStateObj(setIsInvalid, 'password', true)
-    //!         break
-    //!       default:
-    //!         updateStateObj(setMessage, 'password', userData.message)
-    //!         updateStateObj(setIsInvalid, 'email', true)
-    //!         updateStateObj(setIsInvalid, 'password', true)
-    //!     }
-    //!   }
-    //! })
+    submitContactInfo({ name, email, phone_num: phoneNum }).then((res) => {
+      if (res.valid) {
+        //!
+      } else {
+        resetValidity()
+        setIsInvalid(res.is_invalid)
+      }
+    })
   }
 
   return (
     <Form className='contact-form'>
-      <h1 className='contact-form__title'>Please submit your contact info below.</h1>
+      <h5 className='contact-form__title'>Please submit your contact information below.</h5>
       <FormGroup id='contact-form__name'>
         <Label className='contact-form__input-label' for='name'>
           Full name:
@@ -93,6 +77,25 @@ export const ContactForm = ({ loggedInUser }) => {
           }}
         />
         <FormFeedback>{message.email}</FormFeedback>
+      </FormGroup>
+
+      <FormGroup id='contact-form__phone-num'>
+        <Label className='contact-form__input-label' for='phone-num'>
+          Phone number:
+        </Label>
+        <Input
+          id='phone-num'
+          className='contact-form__phone-num-input'
+          type='tel'
+          value={phoneNum}
+          placeholder='123-456-7890'
+          invalid={isInvalid.phone_num}
+          onChange={(e) => {
+            updateStateObj(setIsInvalid, 'phone_num', false)
+            setPhoneNum(e.target.value)
+          }}
+        />
+        <FormFeedback>{message.phoneNum}</FormFeedback>
       </FormGroup>
 
       <Button color='primary' onClick={handleSubmit}>
