@@ -1,6 +1,7 @@
 {
   "name": "realtoraaronhunt",
   "version": "0.1.0",
+  "homepage": "https://bruh.github.io/realtoraaronhunt",
   "private": true,
   "dependencies": {
     "@tanstack/react-query": "^5.50.1",
