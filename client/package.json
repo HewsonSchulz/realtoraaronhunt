@@ -1,7 +1,7 @@
 {
   "name": "realtoraaronhunt",
   "version": "0.1.0",
-  "homepage": "https://hewsonschulz.github.io/realtoraaronhunt",
+  "homepage": "https://realtoraaronhunt.com",
   "private": true,
   "dependencies": {
     "@tanstack/react-query": "^5.50.1",
