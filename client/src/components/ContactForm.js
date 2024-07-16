@@ -59,7 +59,7 @@ export const ContactForm = ({ loggedInUser }) => {
 
   return (
     <Form className='contact-form'>
-      <h5 className='contact-form__title'>Please submit your contact information below.</h5>
+      <p className='contact-form__title'>Please submit your contact information below.</p>
       <FormGroup id='contact-form__name'>
         <Label className='contact-form__input-label' for='name'>
           Full name:

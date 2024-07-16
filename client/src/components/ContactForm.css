@@ -1,8 +1,10 @@
 .contact-form {
+  font-size: min(3vw, 20px);
   display: flex;
   flex-direction: column;
-  padding: 60px 100px 0px 100px;
-  min-width: 615px;
+  /* padding: 60px 100px 0px 100px; */
+  padding: 10vh 10vw;
+  /* min-width: 615px; */
   /* max-width: 1000px; */
 }
 
