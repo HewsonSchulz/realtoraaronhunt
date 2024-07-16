@@ -1,15 +1,17 @@
 .contact-form {
-  font-size: min(3vw, 20px);
+  font-size: clamp(15px, 3vw, 20px);
   display: flex;
   flex-direction: column;
   /* padding: 60px 100px 0px 100px; */
-  padding: 10vh 10vw;
+  padding: 6vh 6vw;
   /* min-width: 615px; */
   /* max-width: 1000px; */
 }
 
 .contact-form__title {
   align-self: center;
+  text-align: center;
+  /* font-weight: bold; */
 }
 
 .contact-form__input-label {
